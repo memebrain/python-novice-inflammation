@@ -33,10 +33,33 @@ import numpy
 Importing a library is like getting a piece of lab equipment out of a storage locker
 and setting it up on the bench. Libraries provide additional functionality to the basic Python package, much like a new piece of equipment adds functionality to a lab space.
 Once you've loaded the library,
-we can ask the library to read our data file for us:
+you can use the functions within that library:
 
 ~~~ {.python}
-numpy.loadtxt(fname='inflammation-01.csv', delimiter=',')
+numpy.max([0, 1, 5, 2])
+~~~
+~~~ {.output}
+5
+~~~
+
+Because it's cumbersome to keep writing `numpy` for every function we use,
+we can use an *alias* when importing.
+This is simply an alternate name for the library:
+
+~~~ {.python}
+import numpy as np
+np.max([0, 1, 5, 2])
+~~~
+~~~ {.output}
+5
+~~~
+
+`np` is the most common alias in the community for using numpy.
+
+We can now ask the library to read our data file for us:
+
+~~~ {.python}
+np.loadtxt(fname='inflammation-01.csv', delimiter=',')
 ~~~
 ~~~ {.output}
 array([[ 0.,  0.,  1., ...,  3.,  0.,  0.],
@@ -48,12 +71,13 @@ array([[ 0.,  0.,  1., ...,  3.,  0.,  0.],
        [ 0.,  0.,  1., ...,  1.,  1.,  0.]])
 ~~~
 
-The expression `numpy.loadtxt(...)` is a [function call](reference.html#function-call)
-that asks Python to run the function `loadtxt` that belongs to the `numpy` library.
+The expression `np.loadtxt(...)` is a [function call](reference.html#function-call)
+that asks Python to run the function `loadtxt` that belongs to the `np` library.
+(Which is an alias for the `numpy` library.)
 This [dotted notation](reference.html#dotted-notation) is used everywhere in Python
 to refer to the parts of things as `thing.component`.
 
-`numpy.loadtxt` has two [parameters](reference.html#parameter):
+`np.loadtxt` has two [parameters](reference.html#parameter):
 the name of the file we want to read,
 and the [delimiter](reference.html#delimiter) that separates values on a line.
 These both need to be character strings (or [strings](reference.html#string) for short),
@@ -72,7 +96,7 @@ To save space,
 Python displays numbers as `1.` instead of `1.0`
 when there's nothing interesting after the decimal point.
 
-Our call to `numpy.loadtxt` read our file,
+Our call to `np.loadtxt` read our file,
 but didn't save the data in memory.
 To do that,
 we need to [assign](reference.html#assignment) the array to a [variable](reference.html#variable).
@@ -157,10 +181,10 @@ it isn't automatically updated when `weight_kg` changes.
 This is different from the way spreadsheets work.
 
 Just as we can assign a single value to a variable, we can also assign an array of values
-to a variable using the same syntax.  Let's re-run `numpy.loadtxt` and save its result:
+to a variable using the same syntax.  Let's re-run `np.loadtxt` and save its result:
 
 ~~~ {.python}
-data = numpy.loadtxt(fname='inflammation-01.csv', delimiter=',')
+data = np.loadtxt(fname='inflammation-01.csv', delimiter=',')
 ~~~
 
 This statement doesn't produce any output because assignment doesn't display anything.
@@ -492,12 +516,14 @@ While there is no "official" plotting library,
 this package is the de facto standard.
 First,
 we will import the `pyplot` module from `matplotlib`
-and use two of its functions to create and display a heat map of our data:
+and use two of its functions to create and display a heat map of our data.
+As above, we will use `plt` as an alias for `pyplot`, which is common in the
+scientific Python community.
 
 ~~~ {.python}
-import matplotlib.pyplot
-image  = matplotlib.pyplot.imshow(data)
-matplotlib.pyplot.show(image)
+from matplotlib import pyplot as plt
+image = plt.imshow(data)
+plt.show(image)
 ~~~
 
 ![Heatmap of the Data](fig/01-numpy_71_0.png)
@@ -525,15 +551,15 @@ Let's take a look at the average inflammation over time:
 
 ~~~ {.python}
 ave_inflammation = data.mean(axis=0)
-ave_plot = matplotlib.pyplot.plot(ave_inflammation)
-matplotlib.pyplot.show(ave_plot)
+ave_plot = plt.plot(ave_inflammation)
+plt.show(ave_plot)
 ~~~
 
 ![Average Inflammation Over Time](fig/01-numpy_73_0.png)
 
 Here,
 we have put the average per day across all patients in the variable `ave_inflammation`,
-then asked `matplotlib.pyplot` to create and display a line graph of those values.
+then asked `plt` to create and display a line graph of those values.
 The result is roughly a linear rise and fall,
 which is suspicious:
 based on other studies,
@@ -541,15 +567,15 @@ we expect a sharper rise and slower fall.
 Let's have a look at two other statistics:
 
 ~~~ {.python}
-max_plot = matplotlib.pyplot.plot(data.max(axis=0))
-matplotlib.pyplot.show(max_plot)
+max_plot = plt.plot(data.max(axis=0))
+plt.show(max_plot)
 ~~~
 
 ![Maximum Value Along The First Axis](fig/01-numpy_75_1.png)
 
 ~~~ {.python}
-min_plot = matplotlib.pyplot.plot(data.min(axis=0))
-matplotlib.pyplot.show(min_plot)
+min_plot = plt.plot(data.min(axis=0))
+plt.show(min_plot)
 ~~~
 
 ![Minimum Value Along The First Axis](fig/01-numpy_75_3.png)
@@ -561,7 +587,7 @@ so either there's a mistake in our calculations
 or something is wrong with our data.
 
 You can group similar plots in a single figure using subplots.
-This script below uses a number of new commands. The function `matplotlib.pyplot.figure()`
+This script below uses a number of new commands. The function `plt.figure()`
 creates a space into which we will place all of our plots. The parameter `figsize`
 tells Python how big to make this space. Each subplot is placed into the figure using
 the `subplot` command. The `subplot` command takes 3 parameters. The first denotes
@@ -573,12 +599,12 @@ axes3). Once a subplot is created, the axes are can be titled using the
 Here are our three plots side by side:
 
 ~~~ {.python}
-import numpy
-import matplotlib.pyplot
+import numpy as np
+from matplotlib import pyplot as plt
 
-data = numpy.loadtxt(fname='inflammation-01.csv', delimiter=',')
+data = np.loadtxt(fname='inflammation-01.csv', delimiter=',')
 
-fig = matplotlib.pyplot.figure(figsize=(10.0, 3.0))
+fig = plt.figure(figsize=(10.0, 3.0))
 
 axes1 = fig.add_subplot(1, 3, 1)
 axes2 = fig.add_subplot(1, 3, 2)
@@ -595,7 +621,7 @@ axes3.plot(data.min(axis=0))
 
 fig.tight_layout()
 
-matplotlib.pyplot.show(fig)
+plt.show(fig)
 ~~~
 
 ![The Previous Plots as Subplots](fig/01-numpy_80_0.png)
@@ -609,15 +635,6 @@ and that we want a tight layout.
 (Perversely,
 if we leave out that call to `fig.tight_layout()`,
 the graphs will actually be squeezed together more closely.)
-
-> ## Scientists dislike typing {.callout}
->
-> We will always use the syntax `import numpy` to import NumPy.
-> However, in order to save typing, it is
-> [often suggested](http://www.scipy.org/getting-started.html#an-example-script)
-> to make a shortcut like so: `import numpy as np`.
-> If you ever see Python code online using a NumPy function with `np`
-> (for example, `np.loadtxt(...)`), it's because they've used this shortcut.
 
 > ## Check your understanding {.challenge}
 >
@@ -683,7 +700,7 @@ the graphs will actually be squeezed together more closely.)
 
 > ## Make your own plot {.challenge}
 >
-> Create a plot showing the standard deviation (`numpy.std`) of the inflammation data for each day across all patients.
+> Create a plot showing the standard deviation (`np.std`) of the inflammation data for each day across all patients.
 
 > ## Moving plots around {.challenge}
 >
