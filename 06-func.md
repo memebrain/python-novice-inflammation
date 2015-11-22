@@ -375,7 +375,7 @@ center(data, desired)
 
 We have passed parameters to functions in two ways:
 directly, as in `type(data)`,
-and by name, as in `numpy.loadtxt(fname='something.csv', delimiter=',')`.
+and by name, as in `np.loadtxt(fname='something.csv', delimiter=',')`.
 In fact,
 we can pass the filename to `loadtxt` without the `fname=`:
 
@@ -401,7 +401,7 @@ np.loadtxt('inflammation-01.csv', ',')
 ---------------------------------------------------------------------------
 TypeError                                 Traceback (most recent call last)
 <ipython-input-26-e3bc6cf4fd6a> in <module>()
-----> 1 numpy.loadtxt('inflammation-01.csv', ',')
+----> 1 np.loadtxt('inflammation-01.csv', ',')
 
 /Users/gwilson/anaconda/lib/python2.7/site-packages/numpy/lib/npyio.pyc in loadtxt(fname, dtype, comments, delimiter, converters, skiprows, usecols, unpack, ndmin)
     775     try:
