@@ -134,12 +134,12 @@ $ cat readings-01.py
 
 ~~~ {.python}
 import sys
-import numpy
+import numpy as np
 
 def main():
     script = sys.argv[0]
     filename = sys.argv[1]
-    data = numpy.loadtxt(filename, delimiter=',')
+    data = np.loadtxt(filename, delimiter=',')
     for m in data.mean(axis=1):
         print(m)
 ~~~
@@ -163,12 +163,12 @@ $ cat readings-02.py
 
 ~~~ {.python}
 import sys
-import numpy
+import numpy as np
 
 def main():
     script = sys.argv[0]
     filename = sys.argv[1]
-    data = numpy.loadtxt(filename, delimiter=',')
+    data = np.loadtxt(filename, delimiter=',')
     for m in data.mean(axis=1):
         print(m)
 
@@ -316,12 +316,12 @@ $ cat readings-03.py
 
 ~~~ {.python}
 import sys
-import numpy
+import numpy as np
 
 def main():
     script = sys.argv[0]
     for filename in sys.argv[1:]:
-        data = numpy.loadtxt(filename, delimiter=',')
+        data = np.loadtxt(filename, delimiter=',')
         for m in data.mean(axis=1):
             print(m)
 
@@ -366,7 +366,7 @@ $ cat readings-04.py
 
 ~~~ {.python}
 import sys
-import numpy
+import numpy as np
 
 def main():
     script = sys.argv[0]
@@ -374,7 +374,7 @@ def main():
     filenames = sys.argv[2:]
 
     for f in filenames:
-        data = numpy.loadtxt(f, delimiter=',')
+        data = np.loadtxt(f, delimiter=',')
 
         if action == '--min':
             values = data.min(axis=1)
@@ -420,7 +420,7 @@ $ cat readings-05.py
 
 ~~~ {.python}
 import sys
-import numpy
+import numpy as np
 
 def main():
     script = sys.argv[0]
@@ -432,7 +432,7 @@ def main():
         process(f, action)
 
 def process(filename, action):
-    data = numpy.loadtxt(filename, delimiter=',')
+    data = np.loadtxt(filename, delimiter=',')
 
     if action == '--min':
         values = data.min(axis=1)
@@ -508,7 +508,7 @@ and we have to halt it using the `Interrupt` option from the `Kernel` menu in th
 
 We now need to rewrite the program so that it loads data from `sys.stdin` if no filenames are provided.
 Luckily,
-`numpy.loadtxt` can handle either a filename or an open file as its first parameter,
+`np.loadtxt` can handle either a filename or an open file as its first parameter,
 so we don't actually need to change `process`.
 That leaves `main`:
 
