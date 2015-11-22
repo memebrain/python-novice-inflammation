@@ -6,7 +6,7 @@ minutes: 30
 ---
 > ## Learning Objectives {.objectives}
 >
-> *   Explain what a library is, and what libraries are used for.
+> *   Explain what a library is, and what a library is used for.
 > *   Load a Python library and use the things it contains.
 > *   Read tabular data from a file into a program.
 > *   Assign values to variables.
