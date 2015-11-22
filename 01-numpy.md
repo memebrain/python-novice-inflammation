@@ -396,30 +396,18 @@ for example,
 we can just ask the array for its mean value
 
 ~~~ {.python}
-print(data.mean())
+print(np.mean(data))
 ~~~
 ~~~ {.output}
 6.14875
 ~~~
 
-`mean` is a [method](reference.html#method) of the array,
-i.e.,
-a function that belongs to it
-in the same way that the member `shape` does.
-If variables are nouns, methods are verbs:
-they are what the thing in question knows how to do.
-We need empty parentheses for `data.mean()`,
-even when we're not passing in any parameters,
-to tell Python to go and do something for us. `data.shape` doesn't
-need `()` because it is just a description but `data.mean()` requires the `()`
-because it is an action.
-
-NumPy arrays have lots of useful methods:
+NumPy has lots of useful functions to examine numeric data:
 
 ~~~ {.python}
-print('maximum inflammation:', data.max())
-print('minimum inflammation:', data.min())
-print('standard deviation:', data.std())
+print('maximum inflammation:', np.max(data))
+print('minimum inflammation:', np.min(data))
+print('standard deviation:', np.std(data))
 ~~~
 ~~~ {.output}
 maximum inflammation: 20.0
@@ -437,7 +425,7 @@ then ask it to do the calculation:
 
 ~~~ {.python}
 patient_0 = data[0, :] # 0 on the first axis, everything on the second
-print('maximum inflammation for patient 0:', patient_0.max())
+print('maximum inflammation for patient 0:', np.max(patient_0))
 ~~~
 ~~~ {.output}
 maximum inflammation for patient 0: 18.0
@@ -447,7 +435,7 @@ We don't actually need to store the row in a variable of its own.
 Instead, we can combine the selection and the method call:
 
 ~~~ {.python}
-print('maximum inflammation for patient 2:', data[2, :].max())
+print('maximum inflammation for patient 2:', np.max(data[2, :]))
 ~~~
 ~~~ {.output}
 maximum inflammation for patient 2: 19.0
@@ -466,7 +454,7 @@ If we ask for the average across axis 0 (rows in our 2D example),
 we get:
 
 ~~~ {.python}
-print(data.mean(axis=0))
+print(np.mean(data))
 ~~~
 ~~~ {.output}
 [  0.           0.45         1.11666667   1.75         2.43333333   3.15
@@ -483,18 +471,18 @@ As a quick check,
 we can ask this array what its shape is:
 
 ~~~ {.python}
-print(data.mean(axis=0).shape)
+print(np.mean(data, axis=0).shape)
 ~~~
 ~~~ {.output}
 (40,)
 ~~~
 
-The expression `(40,)` tells us we have an N&times;1 vector,
+The expression `(40,)` tells us we have a 1D vector of length N,
 so this is the average inflammation per day for all patients.
 If we average across axis 1 (columns in our 2D example), we get:
 
 ~~~ {.python}
-print(data.mean(axis=1))
+print(np.mean(data, axis=1))
 ~~~
 ~~~ {.output}
 [ 5.45   5.425  6.1    5.9    5.55   6.225  5.975  6.65   6.625  6.525
@@ -550,7 +538,7 @@ inflammation rises and falls over a 40-day period.
 Let's take a look at the average inflammation over time:
 
 ~~~ {.python}
-ave_inflammation = data.mean(axis=0)
+ave_inflammation = np.mean(data, axis=0)
 ave_plot = plt.plot(ave_inflammation)
 plt.show(ave_plot)
 ~~~
@@ -567,14 +555,14 @@ we expect a sharper rise and slower fall.
 Let's have a look at two other statistics:
 
 ~~~ {.python}
-max_plot = plt.plot(data.max(axis=0))
+max_plot = plt.plot(np.max(data, axis=0))
 plt.show(max_plot)
 ~~~
 
 ![Maximum Value Along The First Axis](fig/01-numpy_75_1.png)
 
 ~~~ {.python}
-min_plot = plt.plot(data.min(axis=0))
+min_plot = plt.plot(np.min(data, axis=0))
 plt.show(min_plot)
 ~~~
 
@@ -611,13 +599,13 @@ axes2 = fig.add_subplot(1, 3, 2)
 axes3 = fig.add_subplot(1, 3, 3)
 
 axes1.set_ylabel('average')
-axes1.plot(data.mean(axis=0))
+axes1.plot(np.mean(data, axis=0))
 
 axes2.set_ylabel('max')
-axes2.plot(data.max(axis=0))
+axes2.plot(np.max(data, axis=0))
 
 axes3.set_ylabel('min')
-axes3.plot(data.min(axis=0))
+axes3.plot(np.min(data, axis=0))
 
 fig.tight_layout()
 
