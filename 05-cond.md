@@ -114,7 +114,7 @@ seemed to rise like a straight line, one unit per day.
 We can check for this inside the `for` loop we wrote with the following conditional:
 
 ~~~ {.python}
-if data.max(axis=0)[0] == 0 and data.max(axis=0)[20] == 20:
+if np.max(data, axis=0)[0] == 0 and np.max(data, axis=0)[20] == 20:
     print('Suspicious looking maxima!')
 ~~~
 
@@ -123,7 +123,7 @@ the minima per day were all zero (looks like a healthy person snuck into our stu
 We can also check for this with an `elif` condition:
 
 ~~~{.python}
-elif data.min(axis=0).sum() == 0:
+elif np.sum(np.min(data, axis=0)) == 0:
     print('Minima add up to zero!')
 ~~~
 
@@ -138,9 +138,9 @@ Let's test that out:
 
 ~~~ {.python}
 data = np.loadtxt(fname='inflammation-01.csv', delimiter=',')
-if data.max(axis=0)[0] == 0 and data.max(axis=0)[20] == 20:
+if np.max(data, axis=0)[0] == 0 and np.max(data, axis=0)[20] == 20:
     print('Suspicious looking maxima!')
-elif data.min(axis=0).sum() == 0:
+elif np.sum(np.min(data, axis=0)) == 0:
     print('Minima add up to zero!')
 else:
     print('Seems OK!')
@@ -152,9 +152,9 @@ Suspicious looking maxima!
 
 ~~~ {.python}
 data = np.loadtxt(fname='inflammation-03.csv', delimiter=',')
-if data.max(axis=0)[0] == 0 and data.max(axis=0)[20] == 20:
+if np.max(data, axis=0)[0] == 0 and np.max(data, axis=0)[20] == 20:
     print('Suspicious looking maxima!')
-elif data.min(axis=0).sum() == 0:
+elif np.sum(np.min(data, axis=0)) == 0:
     print('Minima add up to zero!')
 else:
     print('Seems OK!')
