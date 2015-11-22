@@ -248,7 +248,7 @@ let's use NumPy to create a matrix of 0's
 and then center that around 3:
 
 ~~~ {.python}
-z = numpy.zeros((2,2))
+z = np.zeros((2,2))
 print(center(z, 3))
 ~~~
 ~~~ {.output}
@@ -260,7 +260,7 @@ That looks right,
 so let's try `center` on our real data:
 
 ~~~ {.python}
-data = numpy.loadtxt(fname='inflammation-01.csv', delimiter=',')
+data = np.loadtxt(fname='inflammation-01.csv', delimiter=',')
 print(center(data, 0))
 ~~~
 ~~~ {.output}
@@ -380,7 +380,7 @@ In fact,
 we can pass the filename to `loadtxt` without the `fname=`:
 
 ~~~ {.python}
-numpy.loadtxt('inflammation-01.csv', delimiter=',')
+np.loadtxt('inflammation-01.csv', delimiter=',')
 ~~~
 ~~~ {.output}
 array([[ 0.,  0.,  1., ...,  3.,  0.,  0.],
@@ -395,7 +395,7 @@ array([[ 0.,  0.,  1., ...,  3.,  0.,  0.],
 but we still need to say `delimiter=`:
 
 ~~~ {.python}
-numpy.loadtxt('inflammation-01.csv', ',')
+np.loadtxt('inflammation-01.csv', ',')
 ~~~
 ~~~ {.error}
 ---------------------------------------------------------------------------
@@ -429,7 +429,7 @@ If we call the function with two arguments,
 it works as it did before:
 
 ~~~ {.python}
-test_data = numpy.zeros((2, 2))
+test_data = np.zeros((2, 2))
 print(center(test_data, 3))
 ~~~
 ~~~ {.output}
@@ -441,7 +441,7 @@ But we can also now call it with just one parameter,
 in which case `desired` is automatically assigned the [default value](reference.html#default-value) of 0.0:
 
 ~~~ {.python}
-more_data = 5 + numpy.zeros((2, 2))
+more_data = 5 + np.zeros((2, 2))
 print('data before centering:')
 print(more_data)
 print('centered data:')
@@ -498,10 +498,10 @@ a: 1 b: 2 c: 77
 ~~~
 
 With that in hand,
-let's look at the help for `numpy.loadtxt`:
+let's look at the help for `np.loadtxt`:
 
 ~~~ {.python}
-help(numpy.loadtxt)
+help(np.loadtxt)
 ~~~
 ~~~ {.output}
 Help on function loadtxt in module numpy.lib.npyio:
@@ -604,7 +604,7 @@ and eight others that do.
 If we call the function like this:
 
 ~~~python
-numpy.loadtxt('inflammation-01.csv', ',')
+np.loadtxt('inflammation-01.csv', ',')
 ~~~
 
 then the filename is assigned to `fname` (which is what we want),
@@ -656,7 +656,7 @@ the second parameter in the list.
 
 > ## Testing and documenting your function {.challenge}
 >
-> Run the commands `help(numpy.arange)` and `help(numpy.linspace)`
+> Run the commands `help(np.arange)` and `help(np.linspace)`
 > to see how to use these functions to generate regularly-spaced values,
 > then use those values to test your `rescale` function.
 > Once you've successfully tested your function,
