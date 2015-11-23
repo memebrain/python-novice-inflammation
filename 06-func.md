@@ -184,13 +184,13 @@ def analyze(filename):
     axes3 = fig.add_subplot(1, 3, 3)
 
     axes1.set_ylabel('average')
-    axes1.plot(data.mean(axis=0))
+    axes1.plot(np.mean(data, axis=0))
 
     axes2.set_ylabel('max')
-    axes2.plot(data.max(axis=0))
+    axes2.plot(np.max(data, axis=0))
 
     axes3.set_ylabel('min')
-    axes3.plot(data.min(axis=0))
+    axes3.plot(np.min(data, axis=0))
 
     fig.tight_layout()
     plt.show(fig)
@@ -204,9 +204,9 @@ def detect_problems(filename):
 
     data = np.loadtxt(fname=filename, delimiter=',')
 
-    if data.max(axis=0)[0] == 0 and data.max(axis=0)[20] == 20:
+    if np.max(data, axis=0)[0] == 0 and np.max(data, axis=0)[20] == 20:
         print('Suspicious looking maxima!')
-    elif data.min(axis=0).sum() == 0:
+    elif np.sum(np.min(data, axis=0)) == 0:
         print('Minima add up to zero!')
     else:
         print('Seems OK!')
@@ -237,7 +237,7 @@ let's write a function to center a dataset around a particular value:
 
 ~~~ {.python}
 def center(data, desired):
-    return (data - data.mean()) + desired
+    return (data - np.mean(data)) + desired
 ~~~
 
 We could test this on our actual data,
@@ -248,7 +248,7 @@ let's use NumPy to create a matrix of 0's
 and then center that around 3:
 
 ~~~ {.python}
-z = numpy.zeros((2,2))
+z = np.zeros((2,2))
 print(center(z, 3))
 ~~~
 ~~~ {.output}
@@ -260,7 +260,7 @@ That looks right,
 so let's try `center` on our real data:
 
 ~~~ {.python}
-data = numpy.loadtxt(fname='inflammation-01.csv', delimiter=',')
+data = np.loadtxt(fname='inflammation-01.csv', delimiter=',')
 print(center(data, 0))
 ~~~
 ~~~ {.output}
@@ -277,9 +277,11 @@ It's hard to tell from the default output whether the result is correct,
 but there are a few simple tests that will reassure us:
 
 ~~~ {.python}
-print('original min, mean, and max are:', data.min(), data.mean(), data.max())
+print('original min, mean, and max are:', np.min(data),
+      np.mean(data), np.max(data))
 centered = center(data, 0)
-print('min, mean, and and max of centered data are:', centered.min(), centered.mean(), centered.max())
+print('min, mean, and and max of centered data are:', np.min(centered),
+      np.mean(centered), np.max(centered))
 ~~~
 ~~~ {.output}
 original min, mean, and max are: 0.0 6.14875 20.0
@@ -293,7 +295,7 @@ The mean of the centered data isn't quite zero --- we'll explore why not in the 
 We can even go further and check that the standard deviation hasn't changed:
 
 ~~~ {.python}
-print('std dev before and after:', data.std(), centered.std())
+print('std dev before and after:', np.std(data), np.std(centered))
 ~~~
 ~~~ {.output}
 std dev before and after: 4.61383319712 4.61383319712
@@ -304,7 +306,8 @@ but we probably wouldn't notice if they were different in the sixth decimal plac
 Let's do this instead:
 
 ~~~ {.python}
-print('difference in standard deviations before and after:', data.std() - centered.std())
+print('difference in standard deviations before and after:',
+      np.std(data) - np.std(centered))
 ~~~
 ~~~ {.output}
 difference in standard deviations before and after: -3.5527136788e-15
@@ -323,7 +326,7 @@ The usual way to put documentation in software is to add [comments](reference.ht
 ~~~ {.python}
 # center(data, desired): return a new array containing the original data centered around the desired value.
 def center(data, desired):
-    return (data - data.mean()) + desired
+    return (data - np.mean(data)) + desired
 ~~~
 
 There's a better way, though.
@@ -333,7 +336,7 @@ that string is attached to the function as its documentation:
 ~~~ {.python}
 def center(data, desired):
     '''Return a new array containing the original data centered around the desired value.'''
-    return (data - data.mean()) + desired
+    return (data - np.mean(data)) + desired
 ~~~
 
 This is better because we can now ask Python's built-in help system to show us the documentation for the function:
@@ -358,7 +361,7 @@ we can break the string across multiple lines:
 def center(data, desired):
     '''Return a new array containing the original data centered around the desired value.
     Example: center([1, 2, 3], 0) => [-1, 0, 1]'''
-    return (data - data.mean()) + desired
+    return (data - np.mean(data)) + desired
 
 help(center)
 ~~~
@@ -375,12 +378,12 @@ center(data, desired)
 
 We have passed parameters to functions in two ways:
 directly, as in `type(data)`,
-and by name, as in `numpy.loadtxt(fname='something.csv', delimiter=',')`.
+and by name, as in `np.loadtxt(fname='something.csv', delimiter=',')`.
 In fact,
 we can pass the filename to `loadtxt` without the `fname=`:
 
 ~~~ {.python}
-numpy.loadtxt('inflammation-01.csv', delimiter=',')
+np.loadtxt('inflammation-01.csv', delimiter=',')
 ~~~
 ~~~ {.output}
 array([[ 0.,  0.,  1., ...,  3.,  0.,  0.],
@@ -395,13 +398,13 @@ array([[ 0.,  0.,  1., ...,  3.,  0.,  0.],
 but we still need to say `delimiter=`:
 
 ~~~ {.python}
-numpy.loadtxt('inflammation-01.csv', ',')
+np.loadtxt('inflammation-01.csv', ',')
 ~~~
 ~~~ {.error}
 ---------------------------------------------------------------------------
 TypeError                                 Traceback (most recent call last)
 <ipython-input-26-e3bc6cf4fd6a> in <module>()
-----> 1 numpy.loadtxt('inflammation-01.csv', ',')
+----> 1 np.loadtxt('inflammation-01.csv', ',')
 
 /Users/gwilson/anaconda/lib/python2.7/site-packages/numpy/lib/npyio.pyc in loadtxt(fname, dtype, comments, delimiter, converters, skiprows, usecols, unpack, ndmin)
     775     try:
@@ -421,7 +424,7 @@ let's re-define our `center` function like this:
 def center(data, desired=0.0):
     '''Return a new array containing the original data centered around the desired value (0 by default).
     Example: center([1, 2, 3], 0) => [-1, 0, 1]'''
-    return (data - data.mean()) + desired
+    return (data - np.mean(data)) + desired
 ~~~
 
 The key change is that the second parameter is now written `desired=0.0` instead of just `desired`.
@@ -429,7 +432,7 @@ If we call the function with two arguments,
 it works as it did before:
 
 ~~~ {.python}
-test_data = numpy.zeros((2, 2))
+test_data = np.zeros((2, 2))
 print(center(test_data, 3))
 ~~~
 ~~~ {.output}
@@ -441,7 +444,7 @@ But we can also now call it with just one parameter,
 in which case `desired` is automatically assigned the [default value](reference.html#default-value) of 0.0:
 
 ~~~ {.python}
-more_data = 5 + numpy.zeros((2, 2))
+more_data = 5 + np.zeros((2, 2))
 print('data before centering:')
 print(more_data)
 print('centered data:')
@@ -498,10 +501,10 @@ a: 1 b: 2 c: 77
 ~~~
 
 With that in hand,
-let's look at the help for `numpy.loadtxt`:
+let's look at the help for `np.loadtxt`:
 
 ~~~ {.python}
-help(numpy.loadtxt)
+help(np.loadtxt)
 ~~~
 ~~~ {.output}
 Help on function loadtxt in module numpy.lib.npyio:
@@ -604,7 +607,7 @@ and eight others that do.
 If we call the function like this:
 
 ~~~python
-numpy.loadtxt('inflammation-01.csv', ',')
+np.loadtxt('inflammation-01.csv', ',')
 ~~~
 
 then the filename is assigned to `fname` (which is what we want),
@@ -656,7 +659,7 @@ the second parameter in the list.
 
 > ## Testing and documenting your function {.challenge}
 >
-> Run the commands `help(numpy.arange)` and `help(numpy.linspace)`
+> Run the commands `help(np.arange)` and `help(np.linspace)`
 > to see how to use these functions to generate regularly-spaced values,
 > then use those values to test your `rescale` function.
 > Once you've successfully tested your function,

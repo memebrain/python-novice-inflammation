@@ -40,33 +40,33 @@ the "something" we want to do is generate a set of plots for each file in our in
 Let's test it by analyzing the first three files in the list:
 
 ~~~ {.python}
-import numpy
-import matplotlib.pyplot
+import numpy as np
+from matplotlib import pyplot as plt
 
 filenames = glob.glob('inflammation*.csv')
 filenames = filenames[0:3]
 for f in filenames:
     print(f)
 
-    data = numpy.loadtxt(fname=f, delimiter=',')
+    data = np.loadtxt(fname=f, delimiter=',')
 
-    fig = matplotlib.pyplot.figure(figsize=(10.0, 3.0))
+    fig = plt.figure(figsize=(10.0, 3.0))
 
     axes1 = fig.add_subplot(1, 3, 1)
     axes2 = fig.add_subplot(1, 3, 2)
     axes3 = fig.add_subplot(1, 3, 3)
 
     axes1.set_ylabel('average')
-    axes1.plot(data.mean(axis=0))
+    axes1.plot(np.mean(data, axis=0))
 
     axes2.set_ylabel('max')
-    axes2.plot(data.max(axis=0))
+    axes2.plot(np.max(data, axis=0))
 
     axes3.set_ylabel('min')
-    axes3.plot(data.min(axis=0))
+    axes3.plot(np.min(data, axis=0))
 
     fig.tight_layout()
-    matplotlib.pyplot.show(fig)
+    plt.show(fig)
 ~~~
 
 ~~~ {.output}

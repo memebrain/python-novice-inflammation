@@ -124,13 +124,13 @@ def normalize_rectangle(rect):
 The preconditions on lines 2, 4, and 5 catch invalid inputs:
 
 ~~~ {.python}
-print(normalize_rectangle( (0.0, 1.0, 2.0) )) # missing the fourth coordinate
+print(normalize_rectangle([0.0, 1.0, 2.0])) # missing the fourth coordinate
 ~~~
 ~~~ {.error}
 ---------------------------------------------------------------------------
 AssertionError                            Traceback (most recent call last)
 <ipython-input-21-3a97b1dcab70> in <module>()
-----> 1 print(normalize_rectangle( (0.0, 1.0, 2.0) )) # missing the fourth coordinate
+----> 1 print(normalize_rectangle([0.0, 1.0, 2.0])) # missing the fourth coordinate
 
 <ipython-input-20-408dc39f3915> in normalize_rectangle(rect)
       1 def normalize_rectangle(rect):
@@ -143,13 +143,13 @@ AssertionError: Rectangles must contain 4 coordinates
 ~~~
 
 ~~~ {.python}
-print(normalize_rectangle( (4.0, 2.0, 1.0, 5.0) )) # X axis inverted
+print(normalize_rectangle([4.0, 2.0, 1.0, 5.0])) # X axis inverted
 ~~~
 ~~~ {.error}
 ---------------------------------------------------------------------------
 AssertionError                            Traceback (most recent call last)
 <ipython-input-22-f05ae7878a45> in <module>()
-----> 1 print(normalize_rectangle( (4.0, 2.0, 1.0, 5.0) )) # X axis inverted
+----> 1 print(normalize_rectangle([4.0, 2.0, 1.0, 5.0])) # X axis inverted
 
 <ipython-input-20-408dc39f3915> in normalize_rectangle(rect)
       3     assert len(rect) == 4, 'Rectangles must contain 4 coordinates'
@@ -166,7 +166,7 @@ For example,
 if we normalize a rectangle that is taller than it is wide everything seems OK:
 
 ~~~ {.python}
-print(normalize_rectangle( (0.0, 0.0, 1.0, 5.0) ))
+print(normalize_rectangle([0.0, 0.0, 1.0, 5.0]))
 ~~~
 ~~~ {.output}
 (0, 0, 0.2, 1.0)
@@ -176,13 +176,13 @@ but if we normalize one that's wider than it is tall,
 the assertion is triggered:
 
 ~~~ {.python}
-print(normalize_rectangle( (0.0, 0.0, 5.0, 1.0) ))
+print(normalize_rectangle([0.0, 0.0, 5.0, 1.0]))
 ~~~
 ~~~ {.error}
 ---------------------------------------------------------------------------
 AssertionError                            Traceback (most recent call last)
 <ipython-input-24-5f0ef7954aeb> in <module>()
-----> 1 print(normalize_rectangle( (0.0, 0.0, 5.0, 1.0) ))
+----> 1 print(normalize_rectangle([0.0, 0.0, 5.0, 1.0]))
 
 <ipython-input-20-408dc39f3915> in normalize_rectangle(rect)
      16
@@ -270,17 +270,17 @@ Its advocates believe it produces better code faster because:
 Here are three test functions for `range_overlap`:
 
 ~~~ {.python}
-assert range_overlap([ (0.0, 1.0) ]) == (0.0, 1.0)
-assert range_overlap([ (2.0, 3.0), (2.0, 4.0) ]) == (2.0, 3.0)
-assert range_overlap([ (0.0, 1.0), (0.0, 2.0), (-1.0, 1.0) ]) == (0.0, 1.0)
+assert range_overlap([(0.0, 1.0)]) == (0.0, 1.0)
+assert range_overlap([(2.0, 3.0), (2.0, 4.0)]) == (2.0, 3.0)
+assert range_overlap([(0.0, 1.0), (0.0, 2.0), (-1.0, 1.0)]) == (0.0, 1.0)
 ~~~
 ~~~ {.error}
 ---------------------------------------------------------------------------
 AssertionError                            Traceback (most recent call last)
 <ipython-input-25-d8be150fbef6> in <module>()
-----> 1 assert range_overlap([ (0.0, 1.0) ]) == (0.0, 1.0)
-      2 assert range_overlap([ (2.0, 3.0), (2.0, 4.0) ]) == (2.0, 3.0)
-      3 assert range_overlap([ (0.0, 1.0), (0.0, 2.0), (-1.0, 1.0) ]) == (0.0, 1.0)
+----> 1 assert range_overlap([(0.0, 1.0)]) == (0.0, 1.0)
+      2 assert range_overlap([(2.0, 3.0), (2.0, 4.0)]) == (2.0, 3.0)
+      3 assert range_overlap([(0.0, 1.0), (0.0, 2.0), (-1.0, 1.0)]) == (0.0, 1.0)
 
 AssertionError:
 ~~~
@@ -300,7 +300,7 @@ Something important is missing, though.
 We don't have any tests for the case where the ranges don't overlap at all:
 
 ~~~ {.python}
-assert range_overlap([ (0.0, 1.0), (5.0, 6.0) ]) == ???
+assert range_overlap([(0.0, 1.0), (5.0, 6.0)]) == ???
 ~~~
 
 What should `range_overlap` do in this case:
@@ -315,7 +315,7 @@ before we realized there was an issue.
 And what about this case?
 
 ~~~ {.python}
-assert range_overlap([ (0.0, 1.0), (1.0, 2.0) ]) == ???
+assert range_overlap([(0.0, 1.0), (1.0, 2.0)]) == ???
 ~~~
 
 Do two segments that touch at their endpoints overlap or not?
@@ -340,15 +340,15 @@ With that decision made,
 we can finish writing our last two tests:
 
 ~~~ {.python}
-assert range_overlap([ (0.0, 1.0), (5.0, 6.0) ]) == None
-assert range_overlap([ (0.0, 1.0), (1.0, 2.0) ]) == None
+assert range_overlap([(0.0, 1.0), (5.0, 6.0)]) == None
+assert range_overlap([(0.0, 1.0), (1.0, 2.0)]) == None
 ~~~
 ~~~ {.error}
 ---------------------------------------------------------------------------
 AssertionError                            Traceback (most recent call last)
 <ipython-input-26-d877ef460ba2> in <module>()
-----> 1 assert range_overlap([ (0.0, 1.0), (5.0, 6.0) ]) == None
-      2 assert range_overlap([ (0.0, 1.0), (1.0, 2.0) ]) == None
+----> 1 assert range_overlap([(0.0, 1.0), (5.0, 6.0)]) == None
+      2 assert range_overlap([(0.0, 1.0), (1.0, 2.0)]) == None
 
 AssertionError:
 ~~~
@@ -377,11 +377,11 @@ let's put them all in a function:
 
 ~~~ {.python}
 def test_range_overlap():
-    assert range_overlap([ (0.0, 1.0), (5.0, 6.0) ]) == None
-    assert range_overlap([ (0.0, 1.0), (1.0, 2.0) ]) == None
-    assert range_overlap([ (0.0, 1.0) ]) == (0.0, 1.0)
-    assert range_overlap([ (2.0, 3.0), (2.0, 4.0) ]) == (2.0, 3.0)
-    assert range_overlap([ (0.0, 1.0), (0.0, 2.0), (-1.0, 1.0) ]) == (0.0, 1.0)
+    assert range_overlap([(0.0, 1.0), (5.0, 6.0)]) == None
+    assert range_overlap([(0.0, 1.0), (1.0, 2.0)]) == None
+    assert range_overlap([(0.0, 1.0)]) == (0.0, 1.0)
+    assert range_overlap([(2.0, 3.0), (2.0, 4.0)]) == (2.0, 3.0)
+    assert range_overlap([(0.0, 1.0), (0.0, 2.0), (-1.0, 1.0)]) == (0.0, 1.0)
 ~~~
 
 We can now test `range_overlap` with a single function call:
@@ -397,10 +397,10 @@ AssertionError                            Traceback (most recent call last)
 
 <ipython-input-28-5d4cd6fd41d9> in test_range_overlap()
       1 def test_range_overlap():
-----> 2     assert range_overlap([ (0.0, 1.0), (5.0, 6.0) ]) == None
-      3     assert range_overlap([ (0.0, 1.0), (1.0, 2.0) ]) == None
-      4     assert range_overlap([ (0.0, 1.0) ]) == (0.0, 1.0)
-      5     assert range_overlap([ (2.0, 3.0), (2.0, 4.0) ]) == (2.0, 3.0)
+----> 2     assert range_overlap([(0.0, 1.0), (5.0, 6.0)]) == None
+      3     assert range_overlap([(0.0, 1.0), (1.0, 2.0)]) == None
+      4     assert range_overlap([(0.0, 1.0)]) == (0.0, 1.0)
+      5     assert range_overlap([(2.0, 3.0), (2.0, 4.0)]) == (2.0, 3.0)
 
 AssertionError:
 ~~~

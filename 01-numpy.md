@@ -33,10 +33,33 @@ import numpy
 Importing a library is like getting a piece of lab equipment out of a storage locker
 and setting it up on the bench. Libraries provide additional functionality to the basic Python package, much like a new piece of equipment adds functionality to a lab space.
 Once you've loaded the library,
-we can ask the library to read our data file for us:
+you can use the functions within that library:
 
 ~~~ {.python}
-numpy.loadtxt(fname='inflammation-01.csv', delimiter=',')
+numpy.max([0, 1, 5, 2])
+~~~
+~~~ {.output}
+5
+~~~
+
+Because it's cumbersome to keep writing `numpy` for every function we use,
+we can use an *alias* when importing.
+This is simply an alternate name for the library:
+
+~~~ {.python}
+import numpy as np
+np.max([0, 1, 5, 2])
+~~~
+~~~ {.output}
+5
+~~~
+
+`np` is the most common alias in the community for using numpy.
+
+We can now ask the library to read our data file for us:
+
+~~~ {.python}
+np.loadtxt(fname='inflammation-01.csv', delimiter=',')
 ~~~
 ~~~ {.output}
 array([[ 0.,  0.,  1., ...,  3.,  0.,  0.],
@@ -48,12 +71,13 @@ array([[ 0.,  0.,  1., ...,  3.,  0.,  0.],
        [ 0.,  0.,  1., ...,  1.,  1.,  0.]])
 ~~~
 
-The expression `numpy.loadtxt(...)` is a [function call](reference.html#function-call)
-that asks Python to run the function `loadtxt` that belongs to the `numpy` library.
+The expression `np.loadtxt(...)` is a [function call](reference.html#function-call)
+that asks Python to run the function `loadtxt` that belongs to the `np` library.
+(Which is an alias for the `numpy` library.)
 This [dotted notation](reference.html#dotted-notation) is used everywhere in Python
 to refer to the parts of things as `thing.component`.
 
-`numpy.loadtxt` has two [parameters](reference.html#parameter):
+`np.loadtxt` has two [parameters](reference.html#parameter):
 the name of the file we want to read,
 and the [delimiter](reference.html#delimiter) that separates values on a line.
 These both need to be character strings (or [strings](reference.html#string) for short),
@@ -72,7 +96,7 @@ To save space,
 Python displays numbers as `1.` instead of `1.0`
 when there's nothing interesting after the decimal point.
 
-Our call to `numpy.loadtxt` read our file,
+Our call to `np.loadtxt` read our file,
 but didn't save the data in memory.
 To do that,
 we need to [assign](reference.html#assignment) the array to a [variable](reference.html#variable).
@@ -157,10 +181,10 @@ it isn't automatically updated when `weight_kg` changes.
 This is different from the way spreadsheets work.
 
 Just as we can assign a single value to a variable, we can also assign an array of values
-to a variable using the same syntax.  Let's re-run `numpy.loadtxt` and save its result:
+to a variable using the same syntax.  Let's re-run `np.loadtxt` and save its result:
 
 ~~~ {.python}
-data = numpy.loadtxt(fname='inflammation-01.csv', delimiter=',')
+data = np.loadtxt(fname='inflammation-01.csv', delimiter=',')
 ~~~
 
 This statement doesn't produce any output because assignment doesn't display anything.
@@ -372,30 +396,18 @@ for example,
 we can just ask the array for its mean value
 
 ~~~ {.python}
-print(data.mean())
+print(np.mean(data))
 ~~~
 ~~~ {.output}
 6.14875
 ~~~
 
-`mean` is a [method](reference.html#method) of the array,
-i.e.,
-a function that belongs to it
-in the same way that the member `shape` does.
-If variables are nouns, methods are verbs:
-they are what the thing in question knows how to do.
-We need empty parentheses for `data.mean()`,
-even when we're not passing in any parameters,
-to tell Python to go and do something for us. `data.shape` doesn't
-need `()` because it is just a description but `data.mean()` requires the `()`
-because it is an action.
-
-NumPy arrays have lots of useful methods:
+NumPy has lots of useful functions to examine numeric data:
 
 ~~~ {.python}
-print('maximum inflammation:', data.max())
-print('minimum inflammation:', data.min())
-print('standard deviation:', data.std())
+print('maximum inflammation:', np.max(data))
+print('minimum inflammation:', np.min(data))
+print('standard deviation:', np.std(data))
 ~~~
 ~~~ {.output}
 maximum inflammation: 20.0
@@ -413,7 +425,7 @@ then ask it to do the calculation:
 
 ~~~ {.python}
 patient_0 = data[0, :] # 0 on the first axis, everything on the second
-print('maximum inflammation for patient 0:', patient_0.max())
+print('maximum inflammation for patient 0:', np.max(patient_0))
 ~~~
 ~~~ {.output}
 maximum inflammation for patient 0: 18.0
@@ -423,7 +435,7 @@ We don't actually need to store the row in a variable of its own.
 Instead, we can combine the selection and the method call:
 
 ~~~ {.python}
-print('maximum inflammation for patient 2:', data[2, :].max())
+print('maximum inflammation for patient 2:', np.max(data[2, :]))
 ~~~
 ~~~ {.output}
 maximum inflammation for patient 2: 19.0
@@ -442,7 +454,7 @@ If we ask for the average across axis 0 (rows in our 2D example),
 we get:
 
 ~~~ {.python}
-print(data.mean(axis=0))
+print(np.mean(data))
 ~~~
 ~~~ {.output}
 [  0.           0.45         1.11666667   1.75         2.43333333   3.15
@@ -459,18 +471,18 @@ As a quick check,
 we can ask this array what its shape is:
 
 ~~~ {.python}
-print(data.mean(axis=0).shape)
+print(np.mean(data, axis=0).shape)
 ~~~
 ~~~ {.output}
 (40,)
 ~~~
 
-The expression `(40,)` tells us we have an N&times;1 vector,
+The expression `(40,)` tells us we have a 1D vector of length N,
 so this is the average inflammation per day for all patients.
 If we average across axis 1 (columns in our 2D example), we get:
 
 ~~~ {.python}
-print(data.mean(axis=1))
+print(np.mean(data, axis=1))
 ~~~
 ~~~ {.output}
 [ 5.45   5.425  6.1    5.9    5.55   6.225  5.975  6.65   6.625  6.525
@@ -492,12 +504,14 @@ While there is no "official" plotting library,
 this package is the de facto standard.
 First,
 we will import the `pyplot` module from `matplotlib`
-and use two of its functions to create and display a heat map of our data:
+and use two of its functions to create and display a heat map of our data.
+As above, we will use `plt` as an alias for `pyplot`, which is common in the
+scientific Python community.
 
 ~~~ {.python}
-import matplotlib.pyplot
-image  = matplotlib.pyplot.imshow(data)
-matplotlib.pyplot.show(image)
+from matplotlib import pyplot as plt
+image = plt.imshow(data)
+plt.show(image)
 ~~~
 
 ![Heatmap of the Data](fig/01-numpy_71_0.png)
@@ -524,16 +538,16 @@ inflammation rises and falls over a 40-day period.
 Let's take a look at the average inflammation over time:
 
 ~~~ {.python}
-ave_inflammation = data.mean(axis=0)
-ave_plot = matplotlib.pyplot.plot(ave_inflammation)
-matplotlib.pyplot.show(ave_plot)
+ave_inflammation = np.mean(data, axis=0)
+ave_plot = plt.plot(ave_inflammation)
+plt.show(ave_plot)
 ~~~
 
 ![Average Inflammation Over Time](fig/01-numpy_73_0.png)
 
 Here,
 we have put the average per day across all patients in the variable `ave_inflammation`,
-then asked `matplotlib.pyplot` to create and display a line graph of those values.
+then asked `plt` to create and display a line graph of those values.
 The result is roughly a linear rise and fall,
 which is suspicious:
 based on other studies,
@@ -541,15 +555,15 @@ we expect a sharper rise and slower fall.
 Let's have a look at two other statistics:
 
 ~~~ {.python}
-max_plot = matplotlib.pyplot.plot(data.max(axis=0))
-matplotlib.pyplot.show(max_plot)
+max_plot = plt.plot(np.max(data, axis=0))
+plt.show(max_plot)
 ~~~
 
 ![Maximum Value Along The First Axis](fig/01-numpy_75_1.png)
 
 ~~~ {.python}
-min_plot = matplotlib.pyplot.plot(data.min(axis=0))
-matplotlib.pyplot.show(min_plot)
+min_plot = plt.plot(np.min(data, axis=0))
+plt.show(min_plot)
 ~~~
 
 ![Minimum Value Along The First Axis](fig/01-numpy_75_3.png)
@@ -561,7 +575,7 @@ so either there's a mistake in our calculations
 or something is wrong with our data.
 
 You can group similar plots in a single figure using subplots.
-This script below uses a number of new commands. The function `matplotlib.pyplot.figure()`
+This script below uses a number of new commands. The function `plt.figure()`
 creates a space into which we will place all of our plots. The parameter `figsize`
 tells Python how big to make this space. Each subplot is placed into the figure using
 the `subplot` command. The `subplot` command takes 3 parameters. The first denotes
@@ -573,29 +587,29 @@ axes3). Once a subplot is created, the axes are can be titled using the
 Here are our three plots side by side:
 
 ~~~ {.python}
-import numpy
-import matplotlib.pyplot
+import numpy as np
+from matplotlib import pyplot as plt
 
-data = numpy.loadtxt(fname='inflammation-01.csv', delimiter=',')
+data = np.loadtxt(fname='inflammation-01.csv', delimiter=',')
 
-fig = matplotlib.pyplot.figure(figsize=(10.0, 3.0))
+fig = plt.figure(figsize=(10.0, 3.0))
 
 axes1 = fig.add_subplot(1, 3, 1)
 axes2 = fig.add_subplot(1, 3, 2)
 axes3 = fig.add_subplot(1, 3, 3)
 
 axes1.set_ylabel('average')
-axes1.plot(data.mean(axis=0))
+axes1.plot(np.mean(data, axis=0))
 
 axes2.set_ylabel('max')
-axes2.plot(data.max(axis=0))
+axes2.plot(np.max(data, axis=0))
 
 axes3.set_ylabel('min')
-axes3.plot(data.min(axis=0))
+axes3.plot(np.min(data, axis=0))
 
 fig.tight_layout()
 
-matplotlib.pyplot.show(fig)
+plt.show(fig)
 ~~~
 
 ![The Previous Plots as Subplots](fig/01-numpy_80_0.png)
@@ -609,15 +623,6 @@ and that we want a tight layout.
 (Perversely,
 if we leave out that call to `fig.tight_layout()`,
 the graphs will actually be squeezed together more closely.)
-
-> ## Scientists dislike typing {.callout}
->
-> We will always use the syntax `import numpy` to import NumPy.
-> However, in order to save typing, it is
-> [often suggested](http://www.scipy.org/getting-started.html#an-example-script)
-> to make a shortcut like so: `import numpy as np`.
-> If you ever see Python code online using a NumPy function with `np`
-> (for example, `np.loadtxt(...)`), it's because they've used this shortcut.
 
 > ## Check your understanding {.challenge}
 >
@@ -683,7 +688,7 @@ the graphs will actually be squeezed together more closely.)
 
 > ## Make your own plot {.challenge}
 >
-> Create a plot showing the standard deviation (`numpy.std`) of the inflammation data for each day across all patients.
+> Create a plot showing the standard deviation (`np.std`) of the inflammation data for each day across all patients.
 
 > ## Moving plots around {.challenge}
 >

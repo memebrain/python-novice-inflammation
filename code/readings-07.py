@@ -1,5 +1,5 @@
 import sys
-import numpy
+import numpy as np
 
 def main():
     script = sys.argv[0]
@@ -14,14 +14,14 @@ def main():
             process(f, action)
 
 def process(filename, action):
-    data = numpy.loadtxt(filename, delimiter=',')
+    data = np.loadtxt(filename, delimiter=',')
 
     if action == '-n':
-        values = data.min(axis=1)
+        values = np.min(data, axis=1)
     elif action == '-m':
-        values = data.mean(axis=1)
+        values = np.mean(data, axis=1)
     elif action == '-x':
-        values = data.max(axis=1)
+        values = np.max(data, axis=1)
 
     for m in values:
         print m
