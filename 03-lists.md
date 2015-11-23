@@ -150,8 +150,9 @@ primes: [1, 3, 5, 7, 2]
 odds: [1, 3, 5, 7, 2]
 ~~~
 
-This is because python stores a list in memory, and then can use multiple names to refer to the same list.
-If all we want to do is copy a (simple) list, we can use the list() command, so we do not modify a list we did not mean to:
+This is because Python stores a list in memory, and then can use multiple names to refer to the same list.
+If all we want to do is copy a (simple) list, we can use the list() command.
+This tells Python to make a *new* list from `odds`, so we do not modify it when we didn't mean to:
 
 ~~~ {.python}
 odds = [1, 3, 5, 7]
